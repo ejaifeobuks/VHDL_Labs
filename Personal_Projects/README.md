@@ -11,9 +11,10 @@ This personal FPGA project implements a 2-bit by 2-bit binary multiplier on a Di
 
 ## Repository layout
 
-- `full_add.vhd` – single-bit full adder used throughout the design.
+- `full_add.vhd` – single-bit full adder component used throughout the design.
 - `top.vhd` – combinational 2x2 multiplier that instantiates `full_add` stages and exposes the four output bits (`S_0`, `S_1`, `S_2`, `C_2`).
-- `Nexys-A7-100T-Master.xdc` – constraint template with the relevant pin assignments for switches and LEDs.
+- `testbench.vhd` – simulation testbench that verifies the multiplier logic by testing all 16 input combinations.
+- `Nexys-A7-100T-Master.xdc` – constraint file with pin assignments for switches and LEDs.
 - `schematic.pdf` – high-level schematic/block diagram of the multiplier datapath.
 
 ## Hardware requirements
@@ -25,11 +26,13 @@ This personal FPGA project implements a 2-bit by 2-bit binary multiplier on a Di
 ## Vivado project setup
 
 1. Start Vivado and create a new RTL project that targets the Nexys A7-100T device.
-2. Add `full_add.vhd` and `top.vhd` to the project.
+2. Add `full_add.vhd` and `top.vhd` to the project as design sources.
 3. Import `Nexys-A7-100T-Master.xdc` and uncomment/rename the pin constraints that correspond to the signals used in `top` (see the table below).
 4. Set `top` as the top module.
-5. Run synthesis, implementation, and generate the bitstream.
-6. Program the board via the Hardware Manager.
+5. Add `testbench.vhd` as a simulation source for verification.
+6. Run behavioral simulation to verify functionality before synthesis.
+7. Run synthesis, implementation, and generate the bitstream.
+8. Program the board via the Hardware Manager.
 
 ## I/O mapping
 
@@ -57,9 +60,15 @@ Note: GitHub may not render PDFs inline in all views; open the link to preview o
 
 The multiplier is purely combinational, so it reacts immediately to switch changes.
 
-## Simulation and test suggestions
+## Simulation and testing
 
-The repository does not currently include a VHDL testbench. To verify the logic before targeting hardware, create a simple testbench that drives all 16 input combinations through the `top` entity and checks the four-bit output against the expected 2x2 multiplication result.
+The repository includes `testbench.vhd`, a comprehensive testbench that automatically tests all 16 input combinations (0×0 through 3×3) and allows you to verify the multiplier logic before deploying to hardware.
+
+To run the simulation:
+
+1. Add `testbench.vhd` as a simulation source in Vivado.
+2. Run behavioral simulation.
+3. Observe the waveforms to verify that outputs (`S_0`, `S_1`, `S_2`, `C_2`) match expected multiplication results for each input combination.
 
 ## Possible extensions
 
