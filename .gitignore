@@ -1,0 +1,16 @@
+# Ignore everything by default
+*
+
+# Allow .vhd and .xdc files
+!*.vhd
+!*.xdc
+
+# Allow directories (needed to traverse into subdirectories)
+!*/
+
+# Allow .gitignore itself
+!.gitignore
+
+# Allow LICENSE and README files (optional - remove these lines if you don't want them)
+!LICENSE
+!README.md
